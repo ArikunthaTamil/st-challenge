@@ -1,6 +1,7 @@
 package st.pages;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.By;
@@ -27,11 +28,20 @@ public class LoginMobilePage extends LoadableComponent<LoginMobilePage> {
     @AndroidFindBy(id = "root_view")
     List<WebElement> listAriticles;
 
+    @AndroidFindBy(id = "row_container")
+    List<WebElement> listArticleResult;
+
+    @AndroidFindBy(id = "article_title")
+    WebElement txtArticleTitle;
+
     @AndroidFindBy(id = "tv_title")
     WebElement lblTopStories;
 
     @AndroidFindBy(id = "article_headline")
     WebElement lblHeadline;
+
+    @AndroidFindBy(id = "viewPager")
+    WebElement detailedViewPager;
 
     @AndroidFindBy(id = "tv_login")
     WebElement btnLogin;
@@ -99,6 +109,18 @@ public class LoginMobilePage extends LoadableComponent<LoginMobilePage> {
         return isTrue;
     }
 
+    public boolean clickBackBtn() {
+        boolean isTrue = false;
+        try {
+            isTrue = (Elementwrappers.click(driver, btnBack));
+            String output = isTrue ? "Pass" : "Fail";
+            Log.info(output + "Click on back button");
+        } catch (Exception e) {
+            Log.info("Error" + "Click on back button" + e);
+        }
+        return isTrue;
+    }
+
     public boolean clickLogin() {
         boolean isTrue = false;
         try {
@@ -142,7 +164,7 @@ public class LoginMobilePage extends LoadableComponent<LoginMobilePage> {
         boolean isTrue = false;
         try {
             isTrue = (Elementwrappers.click(driver, btnSubmit));
-            isTrue = isTrue && !Elementwrappers.isDisplayed(driver,lblErrorMsg);
+            isTrue = isTrue && Elementwrappers.isDisplayed(driver,lblTopStories);
             String output = isTrue ? "Pass" : "Fail";
             Log.info(output + "Click on submit button");
         } catch (Exception e) {
@@ -151,15 +173,108 @@ public class LoginMobilePage extends LoadableComponent<LoginMobilePage> {
         return isTrue;
     }
 
+    public boolean clickSearchField() {
+        boolean isTrue = false;
+        try {
+            isTrue = getMainArticleTitle(1);
+            isTrue = isTrue && clickNavigationMenu();
+            isTrue = isTrue && Elementwrappers.click(driver,searchField);
+            String output = isTrue ? "Pass" : "Fail";
+            Log.info(output + "Click on search field");
+        } catch (Exception e) {
+            Log.info("Error" + "Click on search field" + e);
+        }
+        return isTrue;
+    }
+
+    public boolean SearchValidKeywords() {
+        boolean isTrue = false;
+        try {
+            isTrue = Elementwrappers.enterText((AppiumDriver) driver,txtMainSearchField,TestDataValue.ValidKeywords);
+            Elementwrappers.pressEnter((AndroidDriver) driver);
+            String output = isTrue ? "Pass" : "Fail";
+            Log.info(output + "Enter keyword and search");
+        } catch (Exception e) {
+            Log.info("Error" + "Enter keyword and search" + e);
+        }
+        return isTrue;
+    }
+
+    public boolean SearchInvalidKeywords() {
+        boolean isTrue = false;
+        try {
+            isTrue = Elementwrappers.enterText((AppiumDriver) driver,txtMainSearchField,TestDataValue.InvalidKeywords);
+            Elementwrappers.pressEnter((AndroidDriver) driver);
+            String output = isTrue ? "Pass" : "Fail";
+            Log.info(output + "Enter invalid keyword and search");
+        } catch (Exception e) {
+            Log.info("Error" + "Enter invalid keyword and search" + e);
+        }
+        return isTrue;
+    }
+
+    public boolean verifyFirstArticleInResult() {
+        boolean isTrue = false;
+        try {
+            isTrue = listArticleResult.get(0).findElement(By.id("article_title")).getText().contains(TestDataValue.ValidKeywords);
+            String output = isTrue ? "Pass" : "Fail";
+            Log.info(output + "Verify first article title in search result");
+        } catch (Exception e) {
+            Log.info("Error" + "Verify first article title in search result" + e);
+        }
+        return isTrue;
+    }
+
+    public boolean verifyEmptySearchResult() {
+        boolean isTrue = false;
+        try {
+            isTrue = (listArticleResult.size() < 1)?true:false;
+            String output = isTrue ? "Pass" : "Fail";
+            Log.info(output + "Verify empty search result");
+        } catch (Exception e) {
+            Log.info("Error" + "Verify empty search result" + e);
+        }
+        return isTrue;
+    }
+
+
+    public boolean getMainArticleTitle(int index) {
+        boolean isTrue = false;
+        try {
+            mainArticleHeadline = listAriticles.get(index).findElement(By.id("article_title")).getText();
+            isTrue = !mainArticleHeadline.isEmpty();
+            String output = isTrue ? "Pass" : "Fail";
+            Log.info(output + "Get main article title");
+        } catch (Exception e) {
+            Log.info("Error" + "Get main article title" + e);
+        }
+        return isTrue;
+    }
+
     public boolean clickOnMainArticle() {
         boolean isTrue = false;
         try {
-            mainArticleHeadline = listAriticles.get(1).findElement(By.id("article_title")).getText();
-            isTrue = (Elementwrappers.click(driver, listAriticles.get(1)));
+            isTrue = getMainArticleTitle(1);
+            isTrue = isTrue && (Elementwrappers.click(driver, listAriticles.get(1)));
             String output = isTrue ? "Pass" : "Fail";
             Log.info(output + "Click on main article");
         } catch (Exception e) {
             Log.info("Error" + "Click on main article" + e);
+        }
+        return isTrue;
+    }
+
+    public boolean clickBookmarkIcon() {
+        boolean isTrue = false;
+        try {
+            if(Elementwrappers.click(driver,lblTopStories)) {
+                isTrue = !btnArticleBookmark.isSelected();
+                isTrue = isTrue && Elementwrappers.click(driver, btnArticleBookmark);
+                String output = isTrue ? "Pass" : "Fail";
+                Log.info(output + "Click on bookmark icon");
+            }
+        } catch (Exception e) {
+            Log.info("Error" + "Click on bookmark icon" + e);
         }
         return isTrue;
     }
@@ -178,20 +293,46 @@ public class LoginMobilePage extends LoadableComponent<LoginMobilePage> {
         return isTrue;
     }
 
+    public boolean verifyArticleMediaPresence() {
+        boolean isTrue = false;
+        try {
+                isTrue = Elementwrappers.isDisplayed(driver,detailedViewPager.findElement(By.id("article_image")));
+                String output = isTrue ? "Pass" : "Fail";
+                Log.info(output + "Verify article media presence");
+        } catch (Exception e) {
+            Log.info("Error" + "Verify article media presence" + e);
+        }
+        return isTrue;
+    }
+
     public boolean verifyLoggedInUser() {
         boolean isTrue = false;
         try {
             if(clickNavigationMenu() ) {
-                if (Elementwrappers.isDisplayed(driver, btnLogout)) {
-                    isTrue = lblLoggedInUser.getText().equalsIgnoreCase(TestDataValue.loginID);
+                    isTrue = lblLoggedInUser.getText().contains(TestDataValue.loginID);
                     isTrue = isTrue && Elementwrappers.isDisplayed(driver, btnLogout);
                     String output = isTrue ? "Pass" : "Fail";
                     Elementwrappers.click(driver, btnHome);
                     Log.info(output + "Verify logged in username");
-                }
             }
         } catch (Exception e) {
             Log.info("Error" + "Verify logged in username" + e);
+        }
+        return isTrue;
+    }
+
+    public boolean verifyBookmarkedArticle() {
+        boolean isTrue = false;
+        try {
+            if(clickBackBtn() ) {
+                isTrue = clickNavigationMenu();
+                isTrue = isTrue && Elementwrappers.click(driver, btnHomeBookmark);;
+                isTrue = isTrue && listAriticles.get(0).findElement(By.id("article_title")).getText().contains(mainArticleHeadline);
+                String output = isTrue ? "Pass" : "Fail";
+                Log.info(output + "Verify bookmarked article name");
+            }
+        } catch (Exception e) {
+            Log.info("Error" + "Verify bookmarked article name" + e);
         }
         return isTrue;
     }

@@ -1,8 +1,8 @@
 package st.wrappers;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
 import st.utility.Log;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -14,16 +14,10 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.interactions.HasInputDevices;
-import org.openqa.selenium.interactions.Mouse;
-import org.openqa.selenium.interactions.internal.Coordinates;
-import org.openqa.selenium.interactions.Locatable;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -984,17 +978,12 @@ public class Elementwrappers {
         actions.perform();
     }
 
-    public static void pressEnter(RemoteWebDriver driver, WebElement element) {
+    public static void pressEnter(AndroidDriver driver) {
         try {
-            Robot robot = new Robot();
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+            driver.pressKey(new KeyEvent(AndroidKey.ENTER));
+                Thread.sleep(5000);
 
-            }
-            robot.keyPress(KeyEvent.VK_ENTER);
-            robot.keyRelease(KeyEvent.VK_ENTER);
-        } catch (AWTException e) {
+        } catch (Exception e) {
 
         }
     }
@@ -1009,29 +998,6 @@ public class Elementwrappers {
         }
     }
 
-    /**
-     * Performing mouse over on the web element
-     *
-     * @param driver
-     * @param by
-     * @param ele
-     * @return
-     */
-    public void mousemove(RemoteWebDriver driver, By by, WebElement ele) {
-        try {
-            (new WebDriverWait(driver, maxElementWait)).until(ExpectedConditions.elementToBeClickable(by));
-            Locatable hoverItem = (Locatable) driver.findElement(by);
-            Mouse mouse = ((HasInputDevices) driver).getMouse();
-            Coordinates c = hoverItem.getCoordinates();
-            mouse.mouseMove(c);
-        } catch (StaleElementReferenceException e) {
-
-        } catch (Exception e) {
-            Log.info("Error : Unable to perform mouse hover on given element: " + e);
-        }
-    }
-
-
     public static String getCurrentWindowId(RemoteWebDriver driver) {
         try {
             return driver.getWindowHandle();
@@ -1039,52 +1005,6 @@ public class Elementwrappers {
             return "Error";
         }
     }
-
-    public static boolean checkWebElementsAvailable(RemoteWebDriver driver, List<WebElement> elements) {
-        try {
-            int count = 0;
-            for (WebElement element : elements) {
-                if (Elementwrappers.isDisplayed(driver, element)) {
-                    Log.info("Element " + element + " is available");
-                    count++;
-                } else {
-                    Log.info("Element " + element + " is not available");
-                }
-            }
-            if (count == elements.size()) {
-                return true;
-            }
-            return false;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static boolean checkWebElementsWithTextAvailable(RemoteWebDriver driver, List<WebElement> elements,
-                                                            String specificString) {
-        try {
-            int count = 0;
-            for (WebElement element : elements) {
-                if (Elementwrappers.isDisplayed(driver, element)) {
-                    if (element.getText().contains(specificString)) {
-                        Log.info("Element " + element + " is available");
-                        count++;
-                    } else {
-                        Log.info("Element " + element + " with " + specificString + " is not available");
-                    }
-                } else {
-                    Log.info("Element " + element + " is not available");
-                }
-            }
-            if (count == elements.size()) {
-                return true;
-            }
-            return false;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
 
     public static boolean openUrl(RemoteWebDriver driver, String url) {
         boolean isTrue = false;
@@ -1098,51 +1018,6 @@ public class Elementwrappers {
         return isTrue;
     }
 
-    public boolean isSwitchSelected(RemoteWebDriver driver, WebElement element) {
-        boolean isTrue=false;
-        try {
-            isTrue = (element.getAttribute("class").contains("checked"));
-            String output = isTrue?"Pass":"Fail";
-            Log.info(output+" : Switch selected - "+isTrue);
-        } catch (Exception e) {
-            Log.info("Error : Is Switch selected - "+e);
-        }
-        return isTrue;
-    }
-
-    public static ArrayList<String> getDropdownValues(RemoteWebDriver driver, By byElement) throws Exception {
-        ArrayList<String> valueList;
-        try {
-            List<WebElement> ddList = driver.findElements(byElement);
-            valueList = new ArrayList<String>();
-
-            for (WebElement ddValue : ddList) {
-                if (ddValue.getText() != null && !ddValue.getText().equals(" ") && !ddValue.getText().equals("")) {
-                    valueList.add(ddValue.getText());
-                    Log.info("Info : [EW] DD Element - " + ddValue.getText());
-                }
-            }
-        } catch (Exception e) {
-            throw new Exception("Unable to get the dropdown vlaues : " + e);
-        }
-        return valueList;
-    }
-
-    public static void responseHeader(RemoteWebDriver driver) {
-        try {
-            Object response = ((JavascriptExecutor) driver)
-                    .executeAsyncScript("var callback = arguments[arguments.length - 1];"
-                            + "var xhr = new XMLHttpRequest();" + "xhr.open('GET', '/resource/data.json', true);"
-                            + "xhr.onreadystatechange = function() {" + "  if (xhr.readyState == 4) {"
-                            + "    callback(xhr.getResponseHeader());" + "  }" + "};" + "xhr.send();");
-            JsonObject json = (JsonObject) new JsonParser().parse((String) response);
-            Log.info("Info : [EW] JSON Output - " + json.getAsString());
-        } catch (JsonSyntaxException e) {
-
-        } catch (Exception e) {
-
-        }
-    }
 
     public static String getScreenshot(RemoteWebDriver driver) throws IOException {
         Date date1 = new Date();
@@ -1196,147 +1071,7 @@ public class Elementwrappers {
         return output;
     }
 
-    public static boolean verifyPageHasThisContent(RemoteWebDriver driver, String data) {
-        boolean isTrue = false;
-        try {
-            String output = driver.getPageSource();
-            String log = output.contains(data) ? "Pass" : "Fail";
-            Log.info(log + " : Verify Page Context - " + output + "; Expected data - " + data);
-        } catch (Exception e) {
-            Log.info("Error : Verify Page Context - " + e);
-        }
-        return isTrue;
-    }
 
-    public static boolean verifyText(RemoteWebDriver driver, WebElement element, String expectedText) throws Exception {
-        boolean isTrue=false;
-        String actualText ="";
-        try {
-            Elementwrappers.waitForElement(driver, element);
-            JavascriptExecutor jse = (JavascriptExecutor) driver;
-            actualText = (String) jse.executeScript("return arguments[0].value;", element);
-
-            if (actualText.equalsIgnoreCase(expectedText)) {
-                Log.info("Pass : [EW] Verify text; Expected - "+expectedText+"; Actual - " +actualText);
-                isTrue=true;
-            } else {
-                Log.info("Fail : [EW] Verify text; Expected - "+expectedText+"; Actual - " +actualText);
-            }
-        } catch (StaleElementReferenceException e) {
-            JavascriptExecutor jse = (JavascriptExecutor) driver;
-            actualText = (String) jse.executeScript("return arguments[0].value;", element);
-            if (actualText.equals(expectedText)) {
-                Log.info("Pass : [EW] Verify text; Expected - "+expectedText+"; Actual - " +actualText);
-                isTrue=true;
-            } else {
-                Log.info("Fail : [EW] Actual text at Verify text - "+actualText);
-            }
-        } catch (Exception e) {
-            Log.info("Error : Unable to get text - " + e);
-            throw new Exception("Not able to get the text");
-        }
-        return isTrue;
-    }
-
-    public static boolean verifyTextContains(RemoteWebDriver driver, WebElement element, String expectedText) throws Exception {
-        boolean isTrue=false;
-        try {
-            Elementwrappers.waitForElement(driver, element);
-            String actualText = element.getText();
-            if (actualText.contains(expectedText)) {
-                Log.info("Pass : [EW] Actual text at Verify text contains - "+actualText);
-                isTrue=true;
-            } else {
-                Log.info("Fail : [EW] Actual text at Verify text contains - "+actualText);
-            }
-        } catch (StaleElementReferenceException e) {
-            JavascriptExecutor jse = (JavascriptExecutor) driver;
-            String actualText = (String) jse.executeScript("return arguments[0].value;", element);
-            if (actualText.contains(expectedText)) {
-                Log.info("Pass : [EW] Actual text at Verify text contains - "+actualText);
-                isTrue=true;
-            } else {
-                Log.info("Fail : [EW] Actual text at Verify text contains - "+actualText);
-            }
-        } catch (Exception e) {
-            Log.info("Error : Unable to get text contains - " + e);
-            throw new Exception("Not able to get the text contains");
-        }
-        return isTrue;
-    }
-
-    public static boolean verifyTheFieldLabelContains(RemoteWebDriver driver, WebElement element, String value) throws Exception {
-        boolean isTrue=false;
-        try {
-            isTrue = (isDisplayed(driver, element)) &&  (element.getText().contains(value));
-            String output = isTrue ? "Pass" : "False";
-            Log.info(output+" : Verify the field with label contains - "+value);
-        } catch (Exception e) {
-            Log.info("Error : Verify the field with label contains - "+e);
-            throw new Exception("Error : Verify the field with label contains - "+e);
-        }
-        return isTrue;
-    }
-
-    public static boolean verifyTheFieldLabelShowsError(RemoteWebDriver driver, WebElement element, String value) throws Exception {
-        boolean isTrue=false;
-        try {
-            isTrue = (isDisplayed(driver, element)) &&  (element.getText().equalsIgnoreCase(value) && element.getCssValue("color").equalsIgnoreCase("#d0021b"));
-            String output = isTrue ? "Pass" : "False";
-            Log.info(output+" : Verify the field with label; Expected - "+value+"; Actual - "+element.getText());
-        } catch (Exception e) {
-            Log.info("Error : Verify the field with label - "+e);
-            throw new Exception("Error : Verify the field with label - "+e);
-        }
-        return isTrue;
-    }
-
-    public static boolean verifyTheFieldLabel(RemoteWebDriver driver, WebElement element, String value) throws Exception {
-        boolean isTrue=false;
-        try {
-            isTrue = (isDisplayed(driver, element)) &&  (element.getText().equalsIgnoreCase(value));
-            String output = isTrue ? "Pass" : "False";
-            Log.info(output+" : Verify the field with label; Expected - "+value+"; Actual - "+element.getText());
-        } catch (Exception e) {
-            Log.info("Error : Verify the field with label - "+e);
-            throw new Exception("Error : Verify the field with label - "+e);
-        }
-        return isTrue;
-    }
-
-    public static boolean verifyAllTheFieldsAreAvailable(RemoteWebDriver driver, HashMap<WebElement, String> elements, String pageName) throws Exception {
-        boolean isTrue=false;
-        try {
-            int count=0;
-            Iterator iter = elements.entrySet().iterator();
-            while (iter.hasNext()) {
-                Map.Entry<WebElement, String> mEntry = (Map.Entry) iter.next();
-                if (isDisplayed((AppiumDriver) driver, mEntry.getKey())) {
-                    Log.info("Pass : [EW] Element available - "+mEntry.getValue());
-                    String lblText = mEntry.getValue().replaceAll("Label - ", "");
-                    if (mEntry.getValue().contains("Label")) {
-                        if (mEntry.getKey().getText().contains(lblText)) {
-                            Log.info("Pass : [EW] Label matched - "+lblText+ "; Actual - "+mEntry.getKey().getText());
-                            count++;
-                        } else {
-                            Log.info("Fail : [EW] Label matched - "+lblText+ "; Actual - "+mEntry.getKey().getText());
-                        }
-                    } else {
-                        count++;
-                    }
-                } else {
-                    Log.info("Fail : [EW] Element available - "+mEntry.getValue());
-                }
-            }
-            String result = (elements.size()==count)?"Pass":"Fail";
-            isTrue = elements.size()==count?true:false;
-            Log.info(result + " : All elements available in page - "+pageName);
-        } catch (Exception e) {
-            Log.info("Error : Verify all fields availalbe - "+e);
-            throw new Exception("Error : Verify all fields available - "+e);
-        }
-        return isTrue;
-    }
 
 }
 

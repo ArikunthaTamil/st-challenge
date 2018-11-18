@@ -12,7 +12,7 @@ import cucumber.api.junit.Cucumber;
         glue = {"st.glue"},
         plugin = {"com.cucumber.listener.ExtentCucumberFormatter:report/report.html"},
         format = {"html:target/site/cucumber-pretty", "json:target/cucumber.json"},
-        tags = {"@Login_OpenMainArticle"})
+        tags = {"@Login_SearchMainArticle"})
 
 
 

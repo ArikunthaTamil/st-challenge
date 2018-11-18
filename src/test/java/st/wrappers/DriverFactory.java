@@ -87,28 +87,28 @@ public class DriverFactory extends Elementwrappers {
 
                     driver = new ChromeDriver(chromeOptions);
 
-                    driver.get("https://www.straitstimes.com");
+//                    driver.get("https://www.straitstimes.com");
                     // driver.manage().window().maximize();
                     // driver.manage().window().fullscreen();
-                    waitForLoad(driver);
+//                    waitForLoad(driver);
 //                    driver.findElementByCssSelector(".celtra-group").click();
-                    driver.findElementByCssSelector("li.nav-login").click();
-                    driver.findElementByCssSelector("#j_username").sendKeys("digitaltest2");
-                    driver.findElementByCssSelector("#j_password").sendKeys("Sphdigital1");
-                    driver.findElementByCssSelector(".btn").submit();
+//                    driver.findElementByCssSelector("li.nav-login").click();
+//                    driver.findElementByCssSelector("#j_username").sendKeys("digitaltest2");
+//                    driver.findElementByCssSelector("#j_password").sendKeys("Sphdigital1");
+//                    driver.findElementByCssSelector(".btn").submit();
                     break;
                 case "Safari":
                     driver = new SafariDriver();
                     driver.manage().window().maximize();
-                    driver.get("https://www.straitstimes.com");
-                    Thread.sleep(5000);
-                    driver.switchTo().frame(26);
-                    driver.findElementByCssSelector("#celtra-object-118").click();
-                    driver.switchTo().defaultContent();
-                    driver.findElementByCssSelector("li.nav-login").click();
-                    driver.findElementByCssSelector("#j_username").sendKeys("digitaltest2");
-                    driver.findElementByCssSelector("#j_password").sendKeys("Sphdigital1");
-                    driver.findElementByCssSelector(".btn").submit();
+//                    driver.get("https://www.straitstimes.com");
+//                    Thread.sleep(5000);
+//                    driver.switchTo().frame(26);
+//                    driver.findElementByCssSelector("#celtra-object-118").click();
+//                    driver.switchTo().defaultContent();
+//                    driver.findElementByCssSelector("li.nav-login").click();
+//                    driver.findElementByCssSelector("#j_username").sendKeys("digitaltest2");
+//                    driver.findElementByCssSelector("#j_password").sendKeys("Sphdigital1");
+//                    driver.findElementByCssSelector(".btn").submit();
             }
         }
     }
