@@ -1,0 +1,128 @@
+[
+  {
+    "line": 1,
+    "elements": [
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 26101561267,
+              "status": "passed"
+            },
+            "match": {
+              "location": "BaseGlue.beforeScenario(Scenario)"
+            }
+          }
+        ],
+        "line": 15,
+        "name": "Testcase ID \"login_openArticle\" - ST SG - Login as valid user and open main article",
+        "description": "",
+        "id": "st-sg-smoke-test;testcase-id-\"\u003ctcid\u003e\"---st-sg---login-as-valid-user-and-open-main-article;;2",
+        "after": [
+          {
+            "result": {
+              "duration": 1075523134,
+              "status": "passed"
+            },
+            "match": {
+              "location": "BaseGlue.afterScenario(Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 4305631022,
+              "status": "passed"
+            },
+            "comments": [
+              {
+                "line": 5,
+                "value": "#-- Entry Points,Login, Click main article"
+              }
+            ],
+            "line": 6,
+            "name": "Launch app with Intro screen",
+            "match": {
+              "location": "LoginGlue.launch_app_with_Intro_screen()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 8828703679,
+              "status": "passed"
+            },
+            "line": 7,
+            "name": "Click on Login button",
+            "match": {
+              "location": "LoginGlue.click_on_Login_button()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 13061569629,
+              "status": "passed"
+            },
+            "line": 8,
+            "name": "Enter valid login username and password",
+            "match": {
+              "location": "LoginGlue.enter_valid_login_username_and_password()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 31376373039,
+              "status": "passed"
+            },
+            "line": 9,
+            "name": "Click on login button",
+            "match": {
+              "location": "LoginGlue.click_on_login_button()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 48306535837,
+              "status": "passed"
+            },
+            "line": 10,
+            "name": "Click on the main article from Home Page",
+            "match": {
+              "location": "LoginGlue.click_on_the_main_article_from_Home_Page()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 84934865264,
+              "status": "passed"
+            },
+            "line": 11,
+            "name": "Verify the article headline text in detailed view page",
+            "match": {
+              "location": "LoginGlue.verify_the_article_headline_text_in_detailed_view_page()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 3,
+            "name": "@Login_OpenMainArticle"
+          }
+        ]
+      }
+    ],
+    "name": "ST SG Smoke Test",
+    "description": "",
+    "id": "st-sg-smoke-test",
+    "keyword": "Feature",
+    "uri": "SmokeTest.feature"
+  }
+]

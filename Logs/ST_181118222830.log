@@ -1,0 +1,54 @@
+2018-11-18 22:28:30 INFO  Log:24 - Info : -------Starting of Testcase---------
+2018-11-18 22:28:30 INFO  Log:35 - Info : SCENARIO Started - Testcase ID login_openArticle - ST SG - Login as valid user and open main article
+2018-11-18 22:28:30 INFO  Log:35 - Info : Testcase Id - Testcase ID login_openArticl
+2018-11-18 22:28:31 INFO  Log:35 - Info : Sheet Enabled - LoginPage
+2018-11-18 22:28:31 INFO  Log:35 - Info : Sheet - LoginPage; Total testcases - 1
+2018-11-18 22:28:31 INFO  Log:35 - Info : Unset test data
+2018-11-18 22:28:31 INFO  Log:35 - Info : Test data for test case id - Testcase ID login_openArticl
+2018-11-18 22:28:31 INFO  Log:35 - Info : Testcase Enabled - null
+2018-11-18 22:28:31 INFO  Log:35 - Error : Set test data - java.lang.NullPointerException
+2018-11-18 22:28:31 INFO  Log:35 - Info : Note - Make sure Appium server started manually as configured
+2018-11-18 22:28:31 INFO  Log:35 - Info : Initializing Driver - New
+2018-11-18 22:28:31 INFO  Log:35 - Info : Is Desktop? - No
+2018-11-18 22:28:31 INFO  Log:35 - Info : Platform name - Android
+2018-11-18 22:28:31 INFO  Log:35 - Info : Android desired capabilities are set:/nCapabilities {app: /Users/dbala81/Documents/ST..., appActivity: com.sph.straitstimes.views...., appWaitActivity: com.sph.straitstimes.views...., appWaitDuration: 30000, autoGrantPermissions: true, automationName: UIAutomator2, avd: Nexus_5X_7.1.1, avdLaunchTimeout: 200000, avdReadyTimeout: 200000, clearSystemFiles: true, deviceName: emulator-5554, isHeadless: false, newCommandTimeout: 1200000, noReset: false, platformName: Android, platformVersion: 7.1.1, recreateChromeDriverSessions: true, resetKeyboard: true, unicodeKeyboard: false}
+2018-11-18 22:28:47 INFO  Log:35 - Info : Android driver invoked with context: NATIVE_APP
+2018-11-18 22:28:47 INFO  Log:35 - Info : Get mobile platform : Android
+2018-11-18 22:28:47 INFO  Log:35 - Info : Mobile Driver initialized
+2018-11-18 22:28:58 INFO  Log:35 - Info : Wait for page to load...
+2018-11-18 22:28:58 INFO  Log:35 - Info : ===>>> Handle intro screens
+2018-11-18 22:28:58 INFO  Log:35 - Info : In initScreenHandler
+2018-11-18 22:28:58 INFO  Log:35 - Info :  Waiting for element in intro screen
+2018-11-18 22:28:58 INFO  Log:35 - BasePage.fluentWait :0
+2018-11-18 22:28:58 INFO  Log:35 - Info : [EW] Waiting for element - Located by By.chained({By.id: btn_tnc_ok})
+2018-11-18 22:28:59 INFO  Log:35 - Pass : [EW] Element found - Located by By.chained({By.id: btn_tnc_ok})
+2018-11-18 22:28:59 INFO  Log:35 - Pass : [EW] Element clicked - Located by By.chained({By.id: btn_tnc_ok})
+2018-11-18 22:28:59 INFO  Log:35 - PassClick on Agree button
+2018-11-18 22:28:59 INFO  Log:35 - Info: Click on Skip button
+2018-11-18 22:29:01 INFO  Log:35 - Info : [EW] Waiting for element - Located by By.chained({By.id: welcome})
+2018-11-18 22:29:01 INFO  Log:35 - Pass : [EW] Element found - Located by By.chained({By.id: welcome})
+2018-11-18 22:29:02 INFO  Log:35 - Pass : [EW] Do swipe on screen towards direction 	:left
+2018-11-18 22:29:02 INFO  Log:35 - ElementWrapper.doSwipeOnScreen	0
+2018-11-18 22:29:02 INFO  Log:35 - Info: Swipe the screen - Left
+2018-11-18 22:29:02 INFO  Log:35 - Info : [EW] Waiting for element - Located by By.chained({By.id: skip})
+2018-11-18 22:29:02 INFO  Log:35 - Pass : [EW] Element found - Located by By.chained({By.id: skip})
+2018-11-18 22:29:02 INFO  Log:35 - Info : [EW] Waiting for element - Located by By.chained({By.id: skip})
+2018-11-18 22:29:02 INFO  Log:35 - Pass : [EW] Element found - Located by By.chained({By.id: skip})
+2018-11-18 22:29:02 INFO  Log:35 - Pass : [EW] Element clicked - Located by By.chained({By.id: skip})
+2018-11-18 22:29:02 INFO  Log:35 - PassClick on skip text icon
+2018-11-18 22:29:02 INFO  Log:35 - Info: Click on Skip button
+2018-11-18 22:29:02 INFO  Log:35 - BasePage.initScreenHandler :	4
+2018-11-18 22:29:02 INFO  Log:35 - Info : ===>>> Click Login button from navigation pane
+2018-11-18 22:29:06 INFO  Log:35 - Info : [EW] Waiting for element - Located by By.chained({By.xpath: //android.widget.ImageButton[@content-desc='Navigate up']})
+2018-11-18 22:29:06 INFO  Log:35 - Pass : [EW] Element found - Located by By.chained({By.xpath: //android.widget.ImageButton[@content-desc='Navigate up']})
+2018-11-18 22:29:15 INFO  Log:35 - ErrorClick on Navigation menu buttonorg.openqa.selenium.WebDriverException: Method is not implemented (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 0 milliseconds
+Build info: version: '3.14.0', revision: 'aacccce0', time: '2018-08-02T20:19:58.91Z'
+System info: host: 'Devarajus-MBP', ip: '2406:3003:2004:1f30:5127:fe9:23c8:a243', os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '10.13.6', java.version: '1.8.0_151'
+Driver info: io.appium.java_client.android.AndroidDriver
+Capabilities {app: /Users/dbala81/Documents/ST..., appActivity: com.sph.straitstimes.views...., appPackage: com.buuuk.st, appWaitActivity: com.sph.straitstimes.views...., appWaitDuration: 30000, autoGrantPermissions: true, automationName: UIAutomator2, avd: Nexus_5X_7.1.1, avdLaunchTimeout: 200000, avdReadyTimeout: 200000, clearSystemFiles: true, databaseEnabled: false, desired: {app: /Users/dbala81/Documents/ST..., appActivity: com.sph.straitstimes.views...., appWaitActivity: com.sph.straitstimes.views...., appWaitDuration: 30000, autoGrantPermissions: true, automationName: UIAutomator2, avd: Nexus_5X_7.1.1, avdLaunchTimeout: 200000, avdReadyTimeout: 200000, clearSystemFiles: true, deviceName: emulator-5554, isHeadless: false, newCommandTimeout: 1200000, noReset: false, platformName: Android, platformVersion: 7.1.1, recreateChromeDriverSessions: true, resetKeyboard: true, unicodeKeyboard: false}, deviceApiLevel: 25, deviceManufacturer: Google, deviceModel: Android SDK built for x86, deviceName: emulator-5554, deviceScreenDensity: 420, deviceScreenSize: 1080x1920, deviceUDID: emulator-5554, isHeadless: false, javascriptEnabled: true, locationContextEnabled: false, networkConnectionEnabled: true, newCommandTimeout: 1200000, noReset: false, pixelRatio: 2.625, platform: LINUX, platformName: Android, platformVersion: 7.1.1, recreateChromeDriverSessions: true, resetKeyboard: true, statBarHeight: 63, takesScreenshot: true, unicodeKeyboard: false, viewportRect: {height: 1731, left: 0, top: 63, width: 1080}, warnings: {}, webStorageEnabled: false}
+Session ID: 0c91889f-3512-4ae4-ae32-cb15ab288b67
+2018-11-18 22:29:15 INFO  Log:35 - Info : After scenario
+2018-11-18 22:29:15 INFO  Log:35 - Info : RESULT - failed -- Scenario : Testcase ID login_openArticle - ST SG - Login as valid user and open main article
+2018-11-18 22:29:16 INFO  Log:35 - Info : Driver quits...
+2018-11-18 22:29:17 INFO  Log:30 - Info : -------End of Testcase---------End Test Case-------
