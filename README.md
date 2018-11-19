@@ -4,6 +4,7 @@ Description: This repo contains BDD script for straitstimes Android mobile
 
 
 Framework Details:
+
 a. Main Runner class implemented at st-challenge/src/test/java/st/runner
 
 b. Copy straitstimes.apk(Download from https://apkpure.com/the-straits-times-for-smartphone/com.buuuk.st/download?from=details) into directory st-challenge/Apps/Android
@@ -15,6 +16,7 @@ d. Scenarios can be found at st-challenge/Features
 e. Reports can & Screenshots be found after test run at st-challenge/reports & st-challenge/Screenshots
 
 Android Environment Setup:
+
 a. Download and install from https://developer.android.com/studio/index.html
 
 b. Set $ANDROID_HOME environment variable pointing to ~/Library/Android/sdk
