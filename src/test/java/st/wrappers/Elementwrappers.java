@@ -5,15 +5,12 @@ import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
 import st.utility.Log;
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -24,100 +21,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 
 public class Elementwrappers {
 
     static int maxElementWait = 20;
-
-    public static boolean tapByElement(AppiumDriver driver, By by, int x, int y) {
-        boolean isTrue = false;
-        try {
-            WebElement ele = driver.findElement(by);
-            Point location = ele.getLocation();
-            new TouchAction(driver).tap(PointOption.point(location.getX() + x, location.getY() + y));
-            Log.info("Pass : [EW] Tap on element - " + ele.toString());
-            isTrue = true;
-        } catch (Exception e) {
-            Log.info("Error : Tap on element - " + e);
-        }
-        return isTrue;
-    }
-
-    public static boolean tapByPosition(AppiumDriver driver, int x, int y) {
-        boolean isTrue = false;
-        try {
-            new TouchAction(driver).tap(PointOption.point(x, y));
-            Log.info("Pass : [EW] Tap by position - (" + x + "," + y + ")");
-            isTrue = true;
-        } catch (Exception e) {
-            Log.info("Error : Tap by position - " + e);
-        }
-        return isTrue;
-    }
-
-    public static boolean getContext(AppiumDriver driver) {
-        boolean isTrue = false;
-        try {
-            String context = driver.getContext();
-            Log.info("Pass : [EW] Get context - " + context);
-            isTrue = true;
-        } catch (Exception e) {
-            Log.info("Error : Get context - " + e);
-        }
-        return isTrue;
-    }
-
-
-    public static boolean isAppInstalled(AppiumDriver driver, String bundleId) {
-        boolean isTrue = false;
-        try {
-            if (driver.isAppInstalled(bundleId)) {
-                Log.info("Pass : [EW] Is app installed - " + bundleId);
-                isTrue = true;
-            } else {
-                Log.info("Fail : [EW] Is app installed - " + bundleId);
-            }
-        } catch (Exception e) {
-            Log.info("Error : Is app installed - " + e);
-        }
-        return isTrue;
-    }
-
-    public static boolean getContextHandles(AppiumDriver driver) {
-        boolean isTrue = false;
-        try {
-            Set<String> contexts = driver.getContextHandles();
-            if (contexts.size() > 0) {
-                Log.info("Pass : [EW] Get context handles");
-                int count = 0;
-                for (String context : contexts) {
-                    count++;
-                    Log.info("Info : [EW] Context handle - " + count + " : " + context);
-                }
-                isTrue = true;
-            } else {
-                Log.info("Fail : [EW] No context handles");
-            }
-        } catch (Exception e) {
-            Log.info("Error : Get context handles");
-        }
-        return isTrue;
-    }
-
-    public static boolean hideKeyboard(AppiumDriver driver) {
-        boolean isTrue = false;
-        try {
-            driver.hideKeyboard();
-            Log.info("Pass : [EW] Hide keyboard");
-            isTrue = true;
-        } catch (Exception e) {
-            Log.info("Error : Hide keyboard - " + e);
-        }
-        return isTrue;
-    }
 
     public static boolean enterText(AppiumDriver driver, WebElement ele, String value) {
         boolean isTrue = false;
@@ -282,36 +191,6 @@ public class Elementwrappers {
         return isTrue;
     }
 
-    public static boolean doSwipeOnElement(AppiumDriver driver, String swipeDirection, WebElement ele) throws Exception {
-
-        final long startTime = Log.startTime();
-        boolean isTrue = false;
-
-        try {
-
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            HashMap<String, String> swipeObject = new HashMap<String, String>();
-            swipeObject.put("direction", swipeDirection);
-            swipeObject.put("element", ((MobileElement)ele).getId());
-            js.executeScript("mobile: swipe", swipeObject);
-
-            Log.info("Pass : [EW] Do swipe on element towards direction \t:"+ swipeDirection);
-
-            isTrue = true;
-
-        }//End try
-
-        catch (Exception e) {
-            throw new Exception("Exception at ElementWrapper.doSwipeOnScreen \t: " + e.getMessage(), e);
-        }//End catch
-
-        finally	{
-            Log.info("ElementWrapper.doSwipeOnScreen\t"+ Log.elapsedTime(startTime));
-        }//End finally
-
-        return isTrue;
-    }
-
     public static boolean waitForElement(RemoteWebDriver driver, WebElement ele) {
         return waitForElement(driver, ele, maxElementWait);
     }
@@ -340,41 +219,6 @@ public class Elementwrappers {
         return elementState;
     }
 
-    public static boolean click(RemoteWebDriver driver, By by) {
-        boolean isTrue = false;
-        try {
-            Elementwrappers.waitForElement(driver, driver.findElement(by));
-            driver.findElement(by).click();
-            isTrue = true;
-        } catch (StaleElementReferenceException e) {
-            JavascriptExecutor executor = (JavascriptExecutor) driver;
-            executor.executeScript("arguments[0].click();", driver.findElement(by));
-            isTrue = true;
-        } catch (WebDriverException e) {
-            JavascriptExecutor executor = (JavascriptExecutor) driver;
-            executor.executeScript("arguments[0].click();", driver.findElement(by));
-            isTrue = true;
-        } catch (Exception e) {
-            Log.error("Error - Click : " + e);
-        }
-        return isTrue;
-    }
-
-    public static boolean reloadPage(RemoteWebDriver driver) {
-        boolean isTrue = false;
-        try {
-            driver.get(driver.getCurrentUrl());
-            isTrue = true;
-        } catch (Exception e) {
-            Log.info("Error : Not able to reload the page - " + e);
-        }
-        return isTrue;
-    }
-
-    public static boolean clickWithJs(RemoteWebDriver driver, WebElement element) {
-        return clickWithJs(driver, element, true);
-    }
-
     public static boolean clickWithJs(RemoteWebDriver driver, WebElement element, boolean isWaitRequired) {
         boolean isTrue=false;
         String logMsg = " : [EW] Element clicked by JS - "+element.toString();
@@ -390,26 +234,6 @@ public class Elementwrappers {
         }
         return isTrue;
     }
-
-    public static boolean doubleClick(RemoteWebDriver driver, WebElement element) {
-        boolean isTrue=false;
-        String logMsg = " : [EW] Element clicked by Action - "+element.toString();
-        try {
-            Elementwrappers.waitForElement(driver, element);
-            Actions ac = new Actions(driver);
-            ac.moveToElement(element).doubleClick().build().perform();
-            Log.info("Pass"+logMsg);
-            isTrue = true;
-        } catch (WebDriverException e1) {
-            JavascriptExecutor executor = (JavascriptExecutor) driver;
-            executor.executeScript("arguments[0].click();", element);
-            Log.info("Info : [EW] Try click with JS");
-        }catch (Exception e) {
-            Log.info("Error"+logMsg+" - "+e);
-        }
-        return isTrue;
-    }
-
     public static boolean click(RemoteWebDriver driver, WebElement element) {
         boolean isTrue = false;
         try {
@@ -421,35 +245,6 @@ public class Elementwrappers {
             JavascriptExecutor executor = (JavascriptExecutor) driver;
             executor.executeScript("arguments[0].click();", element);
             Log.info("Pass : [EW] Element clicked by js (NSE) - "+element.toString());
-            isTrue = true;
-        } catch (StaleElementReferenceException e) {
-            JavascriptExecutor executor = (JavascriptExecutor) driver;
-            executor.executeScript("arguments[0].click();", element);
-            Log.info("Pass : [EW] Element clicked by js (Stale) - "+element.toString());
-            isTrue = true;
-        } catch (WebDriverException e) {
-            JavascriptExecutor executor = (JavascriptExecutor) driver;
-            executor.executeScript("arguments[0].click();", element);
-            Log.info("Pass : [EW] Element clicked by js (WDE) - "+element.toString());
-            isTrue = true;
-        } catch (Exception e) {
-            Log.error("Error : Click - " + e);
-        }
-        return isTrue;
-    }
-
-    public static boolean submit(RemoteWebDriver driver, WebElement element) {
-        boolean isTrue = false;
-        try {
-            Elementwrappers.waitForElement(driver, element);
-            (new WebDriverWait(driver, maxElementWait)).until(ExpectedConditions.elementToBeClickable(element));
-            element.sendKeys(Keys.ENTER);
-            Log.info("Pass : [EW] Element submitted - "+element.toString());
-            isTrue = true;
-        } catch (NoSuchElementException e) {
-            JavascriptExecutor executor = (JavascriptExecutor) driver;
-            executor.executeScript("arguments[0].click();", element);
-            Log.info("Pass : [EW] Element clicked by js (Stale) - "+element.toString());
             isTrue = true;
         } catch (StaleElementReferenceException e) {
             JavascriptExecutor executor = (JavascriptExecutor) driver;
@@ -521,92 +316,6 @@ public class Elementwrappers {
         return isTrue;
     }
 
-    public static boolean sendKeysWithoutClear(RemoteWebDriver driver, WebElement ele, String inputData) {
-        boolean isTrue = false;
-        try {
-            (new WebDriverWait(driver, maxElementWait)).until(ExpectedConditions.elementToBeClickable(ele));
-            if (waitForElement(driver, ele)) {
-                ele.sendKeys(inputData);
-                isTrue = true;
-                if (!isTrue)
-                    Log.info("Info : [EW] Send Keys - Fail : " + inputData);
-            }
-        } catch (StaleElementReferenceException e) {
-            ele.sendKeys(inputData);
-            isTrue = true;
-            if (!isTrue)
-                Log.info("Info : [EW] Send Keys - Fail : " + inputData);
-        } catch (Exception e) {
-            Log.error("Error - Send Keys with value : " + inputData + " - " + e);
-        }
-        return isTrue;
-    }
-
-
-    public static void clear(WebElement ele) {
-        ele.clear();
-    }
-
-    public static boolean isDisplayed(WebElement ele) {
-        return ele.isDisplayed();
-    }
-
-    public static boolean isEnabled(RemoteWebDriver driver, WebElement ele) {
-        Elementwrappers.waitForElement(driver, ele);
-        boolean isEnabled = false;
-        try {
-            Thread.sleep(1000);
-            isEnabled = ele.isEnabled();
-        } catch (StaleElementReferenceException e) {
-            JavascriptExecutor executor = (JavascriptExecutor) driver;
-            isEnabled = (boolean) executor.executeScript("return arguments[0].disabled;", ele);
-        } catch (Exception e) {
-            Log.info("Info : [EW] isEnabled : " + isEnabled + "   error : " + e.getMessage());
-        }
-
-        return isEnabled;
-    }
-
-    public static boolean isEnabled(RemoteWebDriver driver, By by) {
-        boolean isEnabled = false;
-        try {
-            (new WebDriverWait(driver, maxElementWait)).until(ExpectedConditions.elementToBeClickable(by));
-            isEnabled = driver.findElement(by).isEnabled();
-        } catch (StaleElementReferenceException e) {
-            // retry the find element
-            isEnabled = driver.findElement(by).isEnabled();
-        } catch (Exception e) {
-            // log("Element identified is not enabled");
-            Log.info("Error : Element identified is not enabled: " + e);
-        }
-        return isEnabled;
-    }
-
-    public static String getText(RemoteWebDriver driver, WebElement element) throws Exception {
-        try {
-            Elementwrappers.waitForElement(driver, element);
-            return element.getText();
-        } catch (StaleElementReferenceException e) {
-            JavascriptExecutor jse = (JavascriptExecutor) driver;
-            String Text = (String) jse.executeScript("return arguments[0].value;", element);
-            return Text;
-        } catch (Exception e) {
-            Log.info("Error : Unable to get text - " + e);
-            throw new Exception("Not able to get the text");
-        }
-    }
-
-    public static String getTextWithJs(RemoteWebDriver driver, WebElement element) throws Exception {
-        try {
-            JavascriptExecutor jse = (JavascriptExecutor) driver;
-            String Text = (String) jse.executeScript("return arguments[0].value;", element);
-            return Text;
-        } catch (Exception e) {
-            Log.info("Error : Unable to get text - " + e);
-            throw new Exception("Not able to get the text");
-        }
-    }
-
     public static boolean isDisplayed(RemoteWebDriver driver, WebElement ele) {
         boolean isDisplayed = false;
         try {
@@ -637,347 +346,6 @@ public class Elementwrappers {
         return isDisplayed;
     }
 
-    /**
-     * To select/check the give element
-     *
-     * @param driver
-     * @param element
-     * @return
-     */
-    public static boolean selectOption(RemoteWebDriver driver, WebElement element) {
-        boolean isSelected = false;
-        try {
-            (new WebDriverWait(driver, maxElementWait)).until(ExpectedConditions.elementToBeClickable(element));
-            if (!element.isSelected()) {
-                if (Elementwrappers.clickWithJs(driver, element)) {
-                    isSelected = true;
-                    Log.info("Info : [EW] Checkbox/radio button selected");
-                } else {
-                    Log.info("Fail : [EW] Fail to select checkbox/radio button");
-                }
-            } else {
-                Elementwrappers.clickWithJs(driver, element);
-                Log.info("Info : [EW] Checkbox/radio button already selected");
-                isSelected = true;
-            }
-        } catch (Exception e) {
-            Log.info("Error : Not able to select Checkbox/radio button - "+e);
-        }
-        return isSelected;
-    }
-
-    /**
-     * To select/check the give locator
-     *
-     * @param driver
-     * @param byElement
-     * @return
-     */
-    public static boolean selectOption(RemoteWebDriver driver, By byElement) {
-        boolean isSelected = false;
-        try {
-            WebElement element = driver.findElement(byElement);
-            if (!element.isSelected()) {
-                if (Elementwrappers.click(driver, element)) {
-                    isSelected = true;
-                    Log.info("Info : [EW] Checkbox/radio button selected");
-                } else {
-                    Log.info("Fail : [EW] Fail to select checkbox/radio button");
-                }
-            } else {
-                Log.info("Info : [EW] Checkbox/radio button already selected");
-                isSelected = true;
-            }
-        } catch (Exception e) {
-            Log.info("Error : Not able to select Checkbox/radio button - " + e);
-        }
-        return isSelected;
-    }
-
-    /**
-     * To de- select if the element is already selected/checked
-     *
-     * @param driver
-     * @param element
-     * @return
-     */
-    public static boolean deselectOption(RemoteWebDriver driver, WebElement element) {
-        boolean deSelected = false;
-        try {
-            (new WebDriverWait(driver, maxElementWait)).until(ExpectedConditions.elementToBeClickable(element));
-            if (element.isSelected()) {
-                if (Elementwrappers.click(driver, element)) {
-                    deSelected = true;
-                    Log.info("Info : [EW] Checkbox/radio button de-selected");
-                } else {
-                    Log.info("Fail : [EW] Fail to de-select checkbox/radio button");
-                }
-            } else {
-                Log.info("Info : [EW] Checkbox/radio button already de-selected");
-                deSelected = true;
-            }
-        } catch (Exception e) {
-            Log.info("Error : Not able to de-select Checkbox/radio button");
-        }
-        return deSelected;
-    }
-
-    /**
-     * To check if the element is selected
-     *
-     * @param driver
-     * @param element
-     * @return
-     */
-    public static boolean isSelected(RemoteWebDriver driver, WebElement element) {
-        boolean isSelected = false;
-        try {
-            (new WebDriverWait(driver, maxElementWait)).until(ExpectedConditions.elementToBeClickable(element));
-            String elementStr = element.toString().replaceAll("Located by By.cssSelector: ", "");
-            WebElement rdoElement = driver.findElement(By.cssSelector(elementStr+":checked"));
-            isSelected = rdoElement.isSelected();
-            Log.info("Info : [EW] Is Selected - "+isSelected);
-        } catch (StaleElementReferenceException e) {
-            Log.info("Error : Is element selected - " + e);
-        } catch (Exception e) {
-            Log.info("Error : Is element selected - " + e);
-        }
-        return isSelected;
-    }
-
-    /**
-     * To check if the element is checked
-     *
-     * @param driver
-     * @param element
-     * @return
-     */
-    public static boolean isChecked(RemoteWebDriver driver, WebElement element) {
-        boolean isSelected = false;
-        try {
-            (new WebDriverWait(driver, maxElementWait)).until(ExpectedConditions.elementToBeClickable(element));
-            String elementStr = element.toString().replaceAll("Located by By.cssSelector: ", "");
-            elementStr = elementStr.replaceAll(" .checbox_wrapper", "");
-            WebElement rdoElement = driver.findElement(By.cssSelector(elementStr));
-            Log.info("Info : Is Checked; Element - "+elementStr + "; Class attribute content - "+rdoElement.getAttribute("class"));
-            isSelected = rdoElement.getAttribute("class").contains("checked");
-            Log.info("Info : [EW] Is Checked - "+isSelected);
-        } catch (StaleElementReferenceException e) {
-            Log.info("Error : Is element checked - " + e);
-        } catch (Exception e) {
-            Log.info("Error : Is element checked - " + e);
-        }
-        return isSelected;
-    }
-
-    /**
-     * Getting the attribute by passing the By
-     *
-     * @param driver
-     * @param by
-     * @param eleProp
-     * @return
-     */
-
-    public static String getAttribute(RemoteWebDriver driver, By by, String eleProp) {
-        String eleAttribute = null;
-        try {
-            (new WebDriverWait(driver, maxElementWait)).until(ExpectedConditions.elementToBeClickable(by));
-            eleAttribute = driver.findElement(by).getAttribute(eleProp);
-        } catch (StaleElementReferenceException e) {
-            // retry the find element
-            eleAttribute = driver.findElement(by).getAttribute(eleProp);
-        } catch (Exception e) {
-            Log.info("Error : Unable to get attribute: " + e);
-        }
-        return eleAttribute;
-    }
-
-    /**
-     * Getting the attribute by passing the By
-     *
-     * @param driver
-     * @param element
-     * @param eleProp
-     * @return
-     */
-
-    public static String getAttribute(RemoteWebDriver driver, WebElement element, String eleProp) {
-        String eleValue = null;
-        try {
-            Elementwrappers.waitForElement(driver, element);
-            eleValue = element.getAttribute(eleProp);
-            Log.info("Info : [EW] Get value - " + eleValue);
-        } catch (StaleElementReferenceException e) {
-            JavascriptExecutor jse = (JavascriptExecutor) driver;
-            String Text = (String) jse.executeScript("return arguments[0].value;", element);
-            Log.info("Info : [EW] Get value - " + Text);
-            return Text;
-        } catch (Exception e) {
-            Log.info("Error : Get value - " + e);
-        }
-        return eleValue;
-    }
-
-    /**
-     * Getting the child count
-     *
-     * @param driver
-     * @param by
-     * @return
-     */
-
-    public static int getChildCount(RemoteWebDriver driver, By by) {
-        int count = 0;
-        try {
-            Elementwrappers.waitForElement(driver, driver.findElement(by));
-            (new WebDriverWait(driver, maxElementWait)).until(ExpectedConditions.elementToBeClickable(by));
-            count = driver.findElements(by).size();
-        } catch (StaleElementReferenceException e) {
-            // retry the find element
-            count = driver.findElements(by).size();
-        } catch (Exception e) {
-            Log.info("Error : Unable to get child element count: " + e);
-        }
-        return count;
-    }
-
-    /**
-     * Getting the WebElements as list at run time
-     *
-     * @param driver
-     * @param by
-     * @return
-     */
-    public static List<WebElement> getElements(RemoteWebDriver driver, By by) {
-        List<WebElement> ele = new ArrayList<>();
-        ele = driver.findElements(by);
-        return ele;
-    }
-
-    /**
-     * Getting the WebElement at run time
-     *
-     * @param driver
-     * @param by
-     * @return
-     */
-    public static WebElement getElement(RemoteWebDriver driver, By by) {
-        WebElement ele;
-        ele = driver.findElement(by);
-        return ele;
-    }
-
-    /**
-     * Getting the css attribute of the element by passing the By
-     *
-     * @param driver
-     * @param by
-     * @return
-     */
-
-    public String getCSSValue(RemoteWebDriver driver, By by, String eleProp) {
-        String eleAttribute = null;
-        try {
-            (new WebDriverWait(driver, maxElementWait)).until(ExpectedConditions.elementToBeClickable(by));
-            eleAttribute = driver.findElement(by).getCssValue(eleProp);
-        } catch (StaleElementReferenceException e) {
-            // retry the find element
-            eleAttribute = driver.findElement(by).getCssValue(eleProp);
-        } catch (Exception e) {
-            Log.info("Error : Unable to get element css value: " + e);
-        }
-        return eleAttribute;
-    }
-
-    /**
-     * Getting the Tag attribute by passing the By
-     *
-     * @param driver
-     * @param by
-     * @return
-     */
-
-    public String getTagName(RemoteWebDriver driver, By by) {
-        String eleAttribute = null;
-        try {
-            (new WebDriverWait(driver, maxElementWait)).until(ExpectedConditions.elementToBeClickable(by));
-            eleAttribute = driver.findElement(by).getTagName();
-        } catch (StaleElementReferenceException e) {
-            // retry the find element
-            eleAttribute = driver.findElement(by).getTagName();
-        } catch (Exception e) {
-            Log.info("Error : Unable to get element tag name: " + e);
-        }
-        return eleAttribute;
-    }
-
-    /**
-     * To scroll to element
-     *
-     * @param driver
-     * @param ele
-     * @return
-     */
-
-    public static void scrollToElement(RemoteWebDriver driver, WebElement ele) {
-        JavascriptExecutor je = (JavascriptExecutor) driver;
-        je.executeAsyncScript("argument[0].scrollintoView(true)", ele);
-
-    }
-
-    public static void scrollDown(RemoteWebDriver driver) {
-        try {
-            JavascriptExecutor je = (JavascriptExecutor) driver;
-            je.executeAsyncScript("window.scrollBy(0, 100)");
-            Log.info("Info : [EW] Scrolled down");
-        } catch (Exception e) {
-
-        }
-    }
-
-    public static boolean scrollDown(RemoteWebDriver driver, int goDownBy) {
-        boolean isTrue=false;
-        try {
-            JavascriptExecutor je = (JavascriptExecutor) driver;
-            je.executeAsyncScript("window.scrollBy(0, " + goDownBy + ")");
-            Log.info("Info : [EW] Scrolled down");
-            isTrue=true;
-        } catch (Exception e) {
-            Log.info("Info : [EW] Scrolled down [E]");
-        }
-        return isTrue;
-    }
-
-    public static void scrollDown(RemoteWebDriver driver, WebElement element) {
-        Actions actions = new Actions(driver);
-        actions.moveToElement(element);
-        actions.perform();
-        Log.info("Info : Moved to element by action - "+element.toString());
-    }
-
-    public static void scrollUpJs(RemoteWebDriver driver) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        HashMap scrollObject = new HashMap(); scrollObject.put("direction", "up");
-        js.executeScript("mobile: scroll", scrollObject);
-        Log.info("Info : Scroll Up JS");
-    }
-
-    public static void scrollDownJs(RemoteWebDriver driver) throws Exception {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        HashMap scrollObject = new HashMap(); scrollObject.put("direction", "down");
-        js.executeScript("mobile: scroll", scrollObject);
-        Thread.sleep(1000);
-        Log.info("Info : Scroll Down JS");
-    }
-
-    public static void scrollDown(RemoteWebDriver driver, By byelement) {
-        Actions actions = new Actions(driver);
-        WebElement element = Elementwrappers.getElement(driver, byelement);
-        actions.moveToElement(element);
-        actions.perform();
-    }
-
     public static void pressEnter(AndroidDriver driver) {
         try {
             driver.pressKey(new KeyEvent(AndroidKey.ENTER));
@@ -988,42 +356,12 @@ public class Elementwrappers {
         }
     }
 
-    public static void scrollUp(RemoteWebDriver driver) {
-        try {
-            JavascriptExecutor je = (JavascriptExecutor) driver;
-            je.executeAsyncScript("window.scrollBy(0, 0)");
-            Log.info("Info : [EW] Scrolled up");
-        } catch (Exception e) {
-
-        }
-    }
-
-    public static String getCurrentWindowId(RemoteWebDriver driver) {
-        try {
-            return driver.getWindowHandle();
-        } catch (Exception e) {
-            return "Error";
-        }
-    }
-
-    public static boolean openUrl(RemoteWebDriver driver, String url) {
-        boolean isTrue = false;
-        try {
-            driver.get(url);
-            Log.info("Info : [EW] Open URL - " + url);
-            isTrue = true;
-        } catch (Exception e) {
-            Log.info("Error : Open URL - " + e);
-        }
-        return isTrue;
-    }
-
     public static String screenshot(RemoteWebDriver driver, String scenarioName, String tcStatus) throws IOException {
         Date date1 = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String folder = dateFormat.format(date1);
 
-        File theDir = new File("./report/screenshots/" + folder);
+        File theDir = new File("./screenshots/" + folder);
         if (!theDir.exists()) {
             theDir.mkdir();
             Log.info("Info : [EW] Screenshots - Folder created");
@@ -1032,31 +370,11 @@ public class Elementwrappers {
         String fileName = (dateFormat.format(date1) + "_" + tcStatus + "_" + scenarioName).replaceAll(" ","").replaceAll("\"","");
         File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 
-        String dest = "./screenshots/" + folder + "/" + fileName + ".png";
+        String dest = "screenshots/" + folder + "/" + fileName + ".png";
         FileUtils.copyFile(srcFile, new File(dest));
 
         return dest;
     }
-
-    /**
-     * Returns the current title of Page
-     */
-    public static String getTitle(RemoteWebDriver driver) {
-        return driver.getTitle();
-    }
-
-    public static String getPageContent(RemoteWebDriver driver) {
-        String output = "";
-        try {
-            output = driver.getPageSource();
-            Log.info("Info : [EW] Get Page Context - " + output);
-        } catch (Exception e) {
-            Log.info("Error : Get Page Context - " + e);
-        }
-        return output;
-    }
-
-
 
 }
 

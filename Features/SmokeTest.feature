@@ -73,7 +73,7 @@ Feature: ST SG Smoke Test
   @SmokeTestDesktop
   @SmokeTest
   @Login_OpenMainArticleDesktop
-  Scenario Outline: Testcase ID "<tcId>" - ST SG - Open other product
+  Scenario Outline: Testcase ID "<tcId>" - ST SG - Open main article Desktop
     #-- Entry Points,Login, Click main article
     Given I'm on ST home page
     And Click on Login button
