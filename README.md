@@ -1,6 +1,6 @@
 # st-challenge
 
-Description: This repo contains BDD script for straitstimes Android mobile 
+Description: This repo contains BDD script for straitstimes Android mobile and Desktop browser(Chrome & Safari)
 
 
 Framework Details:
@@ -39,3 +39,7 @@ APPIUM - v1.9.0
 OS Name & Version - macOS High Sierra & 10.13.6
 
 ST APP - v6.6.8
+
+Chrome - 70.0.3538.102
+
+Safari - 12.0.1 (13606.2.104.1.2)
