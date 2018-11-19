@@ -1018,36 +1018,21 @@ public class Elementwrappers {
         return isTrue;
     }
 
-
-    public static String getScreenshot(RemoteWebDriver driver) throws IOException {
-        Date date1 = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-
-        dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String fileName = dateFormat.format(date1);
-        File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-
-        String dest = "screenshots/" + fileName + ".png";
-        FileUtils.copyFile(srcFile, new File(dest));
-
-        return dest;
-    }
-
     public static String screenshot(RemoteWebDriver driver, String scenarioName, String tcStatus) throws IOException {
         Date date1 = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String folder = dateFormat.format(date1);
 
-        File theDir = new File("./screenshots/" + folder);
+        File theDir = new File("./report/screenshots/" + folder);
         if (!theDir.exists()) {
             theDir.mkdir();
             Log.info("Info : [EW] Screenshots - Folder created");
         }
         dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String fileName = (dateFormat.format(date1) + "_" + tcStatus + "_" + scenarioName).replaceAll(" ","");
+        String fileName = (dateFormat.format(date1) + "_" + tcStatus + "_" + scenarioName).replaceAll(" ","").replaceAll("\"","");
         File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 
-        String dest = System.getProperty("user.dir") + File.separator + "screenshots/" + folder + "/" + fileName + ".png";
+        String dest = "./screenshots/" + folder + "/" + fileName + ".png";
         FileUtils.copyFile(srcFile, new File(dest));
 
         return dest;

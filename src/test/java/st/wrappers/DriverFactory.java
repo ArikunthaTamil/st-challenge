@@ -68,7 +68,7 @@ public class DriverFactory extends Elementwrappers {
         String platform = System.getProperty("platform");
         String browser = System.getProperty("browser");
         String osName = System.getProperty("operatingSystem");
-        String phantomPath = System.getProperty("phantomPath");
+        String mainURL = System.getProperty("mainURL");
 
         if (platform.equalsIgnoreCase("Desktop")) {
             Log.info("Info : Is Desktop? - Yes");
@@ -76,26 +76,35 @@ public class DriverFactory extends Elementwrappers {
             DesiredCapabilities cap = new DesiredCapabilities();
             switch (browser) {
                 case "Chrome":
-                    String chromeDriver = (osName.equalsIgnoreCase("windows") ? "chromedriver.exe" : "chromedriver");
-                    System.setProperty("webdriver.chrome.driver", "BrowserDrivers//" + chromeDriver);
-                    ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.addArguments("--window-size=1920,1080");
-                    chromeOptions.setExperimentalOption("useAutomationExtension", false);
-                    chromeOptions.addArguments("--disbale-gpu");
+                    try {
+                        String chromeDriver = (osName.equalsIgnoreCase("windows") ? "chromedriver.exe" : "chromedriver");
+                        System.setProperty("webdriver.chrome.driver", "BrowserDrivers//" + chromeDriver);
+                        ChromeOptions chromeOptions = new ChromeOptions();
+                        chromeOptions.addArguments("--window-size=1920,1080");
+                        chromeOptions.setExperimentalOption("useAutomationExtension", false);
 
-                    driver = new ChromeDriver(chromeOptions);
+                        Log.info("Info : Chrome options are set:/n" + chromeOptions);
 
-                    driver.get("https://www.straitstimes.com");
-                    driver.manage().window().maximize();
-                    waitForLoad(driver);
-                    break;
+                        driver = new ChromeDriver(chromeOptions);
+                        driver.get(mainURL);
+                        waitForLoad(driver);
+                    } catch (Exception e) {
+                        Log.info("Error : Invoke Chrome driver - " + e);
+                        throw new Exception("Error : Invoke Chrome driver - " + e);
+                    }break;
                 case "Safari":
-                    driver = new SafariDriver();
-                    driver.manage().window().maximize();
-                    driver.get("https://www.straitstimes.com");
-            }
-        }
-    }
+                    try {
+                        driver = new SafariDriver();
+                        driver.manage().window().maximize();
+                        driver.get(mainURL);
+                        waitForLoad(driver);
+                    } catch (Exception e) {
+                        Log.info("Error : Invoke Safari driver - " + e);
+                        throw new Exception("Error : Invoke Safari driver - " + e);
+                    }break;
+                 }
+             }
+          }
 
     /**
      * This method creates the remote driver for mobile device based on the
@@ -235,50 +244,6 @@ public class DriverFactory extends Elementwrappers {
 
     }
 
-    public static boolean switchToWindow(RemoteWebDriver driver, String title) {
-        try {
-            Thread.sleep(3000);
-            Set<String> AllWindowHandles = driver.getWindowHandles();
-            Log.info("Info : Total windows - " + AllWindowHandles.size());
-            for (String window : AllWindowHandles) {
-                Log.info("Info : Current windows :+" + window);
-                driver.switchTo().window(window);
-                Log.info("Info : Switched to window title - " + driver.getTitle());
-                Thread.sleep(3000);
-                if (driver.getTitle().contains(title)) {
-                    Log.info("Pass : Title matched : " + title);
-                    return true;
-                }
-            }
-            Log.info("Fail : Switched to window with title - Exp Title : " + title + "; Act Title : "
-                    + driver.getTitle());
-        } catch (Exception e) {
-            Log.error("Error : Switched to window with title : " + e);
-        }
-        return false;
-    }
-
-    /**
-     * Method to open new Tab and load the given URL
-     *
-     * @param url - URL to load in new tab
-     * @return boolean
-     */
-
-    public static boolean openNewTabAndLoad(String url) {
-        try {
-            ((JavascriptExecutor) driver).executeScript("window.open()");
-            Thread.sleep(5000);
-            ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-            driver.switchTo().window(tabs.get(1)); // switches to new tab
-            driver.get(url);
-            return true;
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return false;
-        }
-    }
     /**
      * Method to switch current driver context to Native
      *
@@ -367,17 +332,6 @@ public class DriverFactory extends Elementwrappers {
         }
     }
 
-    public static boolean closeCurrentWindow() {
-        try {
-            Log.info("Info : Close the window : " + driver.getTitle());
-            driver.close();
-            return true;
-        } catch (Exception e) {
-            Log.info("Fail : Not able to close the current window : " + e);
-        }
-        return false;
-    }
-
     public static boolean switchToWindowId(RemoteWebDriver driver, String windowId) {
         try {
             if (System.getProperty("platform").equals("Desktop")) {
@@ -390,25 +344,4 @@ public class DriverFactory extends Elementwrappers {
         }
     }
 
-    public static boolean switchToWindowAndClose(RemoteWebDriver driver, String title) {
-        try {
-            if (System.getProperty("platform").equalsIgnoreCase("Desktop")) {
-
-                Set<String> AllWindowHandles = driver.getWindowHandles();
-                for (String window : AllWindowHandles) {
-                    driver.switchTo().window(window);
-                    if (driver.getTitle().contains(title)) {
-                        driver.close();
-                        return true;
-                    }
-                }
-            } else if (System.getProperty("platform").equalsIgnoreCase("Mobile")) {
-                driver.close();
-                return true;
-            }
-            return false;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 }

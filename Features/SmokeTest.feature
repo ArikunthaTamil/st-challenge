@@ -1,6 +1,7 @@
 Feature: ST SG Smoke Test
 
   @SmokeTestMobile
+  @SmokeTest
   @Login_OpenMainArticle
   Scenario Outline: Testcase ID "<tcId>" - ST SG - Login as valid user and open main article
     #-- Entry Points,Login, Click main article
@@ -17,6 +18,7 @@ Feature: ST SG Smoke Test
       | login_openArticle |
 
   @SmokeTestMobile
+  @SmokeTest
   @Login_BookmarkMainArticle
   Scenario Outline: Testcase ID "<tcId>" - ST SG - Bookmark main article
     #-- Entry Points,Login, Bookmark main article
@@ -33,6 +35,7 @@ Feature: ST SG Smoke Test
       | login_bookmarkArticle |
 
   @SmokeTestMobile
+  @SmokeTest
   @Login_SearchMainArticle
   Scenario Outline: Testcase ID "<tcId>" - ST SG - Search with keywords
     #-- Entry Points,Login, Search article
@@ -51,6 +54,7 @@ Feature: ST SG Smoke Test
       | login_searchArticle   |
 
   @SmokeTestMobile
+  @SmokeTest
   @Login_OpenOtherProduct
   Scenario Outline: Testcase ID "<tcId>" - ST SG - Open other product
     #-- Entry Points,Login, open other product
@@ -65,4 +69,21 @@ Feature: ST SG Smoke Test
     Examples:
       | tcId                  |
       | login_openMoreProduct  |
+
+  @SmokeTestDesktop
+  @SmokeTest
+  @Login_OpenMainArticleDesktop
+  Scenario Outline: Testcase ID "<tcId>" - ST SG - Open other product
+    #-- Entry Points,Login, Click main article
+    Given I'm on ST home page
+    And Click on Login button
+    And Enter valid login username and password
+    When Click on submit button
+    Then I should see logged in username
+    When Click on the main article from Home Page
+    Then Verify the article headline text and media in detailed view page
+
+    Examples:
+      | tcId               |
+      | login_openArticle  |
 

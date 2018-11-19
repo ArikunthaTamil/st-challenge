@@ -38,7 +38,6 @@ public class Log {
                 test.log(LogStatus.PASS, message);
             if (message.contains("Fail : ")) {
                 test.log(LogStatus.FAIL, message);
-                test.log(LogStatus.FAIL, test.addScreenCapture(Elementwrappers.getScreenshot(driver)));
             }
             if (message.contains("Info : "))
                 test.log(LogStatus.INFO, message);

@@ -55,6 +55,7 @@ public class PropertyFileReader {
             if (System.getProperty("runPlatform").equalsIgnoreCase("Desktop")) {
                 props.setProperty("platform", properties.getProperty("runPlatform"));
                 props.setProperty("browser", properties.getProperty("browser"));
+                props.setProperty("mainURL", properties.getProperty("mainURL"));
             }
             if (System.getProperty("runPlatform").equalsIgnoreCase("ios")) {
                 props.setProperty("platform", properties.getProperty("runPlatform"));

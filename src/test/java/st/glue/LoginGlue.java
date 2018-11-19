@@ -7,6 +7,7 @@ import cucumber.api.java.en.When;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import junit.framework.Assert;
 import st.pages.BasePage;
+import st.pages.LoginDesktopPage;
 import st.pages.LoginMobilePage;
 import st.utility.Log;
 
@@ -16,10 +17,13 @@ public class LoginGlue {
 
     LoginMobilePage loginPage;
     BasePage basePage;
+    LoginDesktopPage desktopLoginPage;
+    String platform = System.getProperty("runPlatform");
 
     public LoginGlue() {
         loginPage = new LoginMobilePage(driver);
         basePage = new BasePage(driver);
+        desktopLoginPage = new LoginDesktopPage(driver);
     }
 
     @Given("^Launch app with Intro screen$")
@@ -28,41 +32,71 @@ public class LoginGlue {
         Assert.assertTrue("Fail to handle introduction page", basePage.initScreenHandler(driver));
     }
 
+    @Given("^I'm on ST home page$")
+    public void i_m_on_ST_home_page() throws Throwable {
+        Log.info("Info : ===>>> Check if it is main page");
+        Assert.assertTrue("Fail to verify main page", desktopLoginPage.isAppInHomePage());
+    }
+
     @And("^Click on Login button$")
     public void click_on_Login_button() throws Throwable {
         Log.info("Info : ===>>> Click Login button from navigation pane");
-        Assert.assertTrue("Fail to click on login button", loginPage.clickLogin());
+        if (platform.equalsIgnoreCase("Desktop")) {
+            Assert.assertTrue("Fail to click on login button", desktopLoginPage.clickLogin());
+        } else{
+            Assert.assertTrue("Fail to click on login button", loginPage.clickLogin());
+        }
     }
 
     @And("^Enter valid login username and password$")
     public void enter_valid_login_username_and_password() throws Throwable {
         Log.info("Info : ===>>> Enter login username and password");
-        Assert.assertTrue("Fail to enter login username and password", loginPage.loginAsValidUser());
+        if (platform.equalsIgnoreCase("Desktop")) {
+            Assert.assertTrue("Fail to enter login username and password", desktopLoginPage.loginAsValidUser());
+        }else{
+            Assert.assertTrue("Fail to enter login username and password", loginPage.loginAsValidUser());
+        }
     }
 
     @And("^Click on submit button$")
     public void click_on_submit_button() throws Throwable {
         Log.info("Info : ===>>> Click on submit button in login screen");
-        Assert.assertTrue("Fail to click on submit button in login screen", loginPage.clickSubmit());
+        if (platform.equalsIgnoreCase("Desktop")) {
+            Assert.assertTrue("Fail to click on submit button in login screen", desktopLoginPage.clickSubmit());
+        }else {
+            Assert.assertTrue("Fail to click on submit button in login screen", loginPage.clickSubmit());
+        }
     }
 
     @Then("^I should see logged in username$")
     public void i_should_see_logged_in_username() throws Throwable {
         Log.info("Info : ===>>> Verify the logged in username");
-        Assert.assertTrue("Fail to check logged in username", loginPage.verifyLoggedInUser());
+        if (platform.equalsIgnoreCase("Desktop")) {
+            Assert.assertTrue("Fail to check logged in username", desktopLoginPage.verifyLoggedInUser());
+        }else{
+            Assert.assertTrue("Fail to check logged in username", loginPage.verifyLoggedInUser());
+        }
     }
 
     @When("^Click on the main article from Home Page$")
     public void click_on_the_main_article_from_Home_Page() throws Throwable {
         Log.info("Info : ===>>> Click on first main article");
-        Assert.assertTrue("Fail to click on first main article", loginPage.clickOnMainArticle());
+        if (platform.equalsIgnoreCase("Desktop")) {
+            Assert.assertTrue("Fail to click on first main article", desktopLoginPage.clickOnMainArticle());
+        }else{
+            Assert.assertTrue("Fail to click on first main article", loginPage.clickOnMainArticle());
+        }
 
     }
 
     @Then("^Verify the article headline text and media in detailed view page$")
     public void verify_the_article_headline_text_in_detailed_view_page() throws Throwable {
         Log.info("Info : ===>>> Verify the main article headline and media presence");
-        Assert.assertTrue("Fail to the verify main article headline and media presence", loginPage.verifyArticleHeadline() && loginPage.verifyArticleMediaPresence());
+        if (platform.equalsIgnoreCase("Desktop")) {
+            Assert.assertTrue("Fail to the verify main article headline and media presence", desktopLoginPage.verifyArticleHeadline(0) && desktopLoginPage.verifyArticleMediaPresence());
+        } else{
+            Assert.assertTrue("Fail to the verify main article headline and media presence", loginPage.verifyArticleHeadline() && loginPage.verifyArticleMediaPresence());
+        }
 
     }
 
