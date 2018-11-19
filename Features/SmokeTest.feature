@@ -1,6 +1,6 @@
 Feature: ST SG Smoke Test
 
-  @SmokeTest
+  @SmokeTestMobile
   @Login_OpenMainArticle
   Scenario Outline: Testcase ID "<tcId>" - ST SG - Login as valid user and open main article
     #-- Entry Points,Login, Click main article
@@ -16,7 +16,7 @@ Feature: ST SG Smoke Test
       | tcId              |
       | login_openArticle |
 
-  @SmokeTest
+  @SmokeTestMobile
   @Login_BookmarkMainArticle
   Scenario Outline: Testcase ID "<tcId>" - ST SG - Bookmark main article
     #-- Entry Points,Login, Bookmark main article
@@ -32,9 +32,9 @@ Feature: ST SG Smoke Test
       | tcId                  |
       | login_bookmarkArticle |
 
-  @SmokeTest
+  @SmokeTestMobile
   @Login_SearchMainArticle
-  Scenario Outline: Testcase ID "<tcId>" - ST SG - Bookmark main article
+  Scenario Outline: Testcase ID "<tcId>" - ST SG - Search with keywords
     #-- Entry Points,Login, Search article
     Given Launch app with Intro screen
     And Click on Login button
@@ -49,4 +49,20 @@ Feature: ST SG Smoke Test
     Examples:
       | tcId                  |
       | login_searchArticle   |
+
+  @SmokeTestMobile
+  @Login_OpenOtherProduct
+  Scenario Outline: Testcase ID "<tcId>" - ST SG - Open other product
+    #-- Entry Points,Login, open other product
+    Given Launch app with Intro screen
+    And Click on Login button
+    And Enter valid login username and password
+    And Click on submit button
+    And Open more ST products screen
+    When I select the given ST product
+    Then I should see the selected product main title
+
+    Examples:
+      | tcId                  |
+      | login_openMoreProduct  |
 

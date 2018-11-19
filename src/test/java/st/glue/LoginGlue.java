@@ -107,4 +107,21 @@ public class LoginGlue {
         Log.info("Info : ===>>> Verify the empty search result");
         Assert.assertTrue("Fail to verify the empty search result", loginPage.verifyEmptySearchResult());
     }
+    @Given("^Open more ST products screen$")
+    public void open_more_ST_products_screen() throws Throwable {
+        Log.info("Info : ===>>> Open more products from ST");
+        Assert.assertTrue("Fail to open more products from ST", loginPage.OpenMoreSTProductsScreen());
+    }
+
+    @When("^I select the given ST product$")
+    public void i_select_the_given_ST_product() throws Throwable {
+        Log.info("Info : ===>>> select given product");
+        Assert.assertTrue("Fail to select given product", loginPage.SelectGivenSTProduct());
+    }
+
+    @Then("^I should see the selected product main title$")
+    public void i_should_see_the_selected_product_main_title() throws Throwable {
+        Log.info("Info : ===>>> Verify the product main title");
+        Assert.assertTrue("Fail to verify the product main title", loginPage.verifySTProductMainTitle());
+    }
 }

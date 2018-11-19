@@ -9,6 +9,7 @@ public class TestDataValue {
     public static String testcaseEnabled;
     public static String InvalidKeywords;
     public static String ValidKeywords;
+    public static String OtherProduct;
 
     public static void unsetTestData() {
         loginID = "";
@@ -29,12 +30,14 @@ public class TestDataValue {
                     loginPassword = BaseGlue.testDataHM.get(testcaseId + ".loginPassword");
                     InvalidKeywords = BaseGlue.testDataHM.get(testcaseId + ".InvalidKeywords");
                     ValidKeywords = BaseGlue.testDataHM.get(testcaseId + ".ValidKeywords");
+                    OtherProduct = BaseGlue.testDataHM.get(testcaseId + ".OtherProduct");
                 }
 
             Log.info("Info : Testdata >> " + testcaseId + " >> Login user name- " + loginID);
             Log.info("Info : Testdata >> " + testcaseId + " >> Login Password - " + loginPassword);
             Log.info("Info : Testdata >> " + testcaseId + " >> Search invalid Keywords - " + InvalidKeywords);
             Log.info("Info : Testdata >> " + testcaseId + " >> Search valid Keywords - " + ValidKeywords);
+            Log.info("Info : Testdata >> " + testcaseId + " >> Other ST Product - " + OtherProduct);
 
             isTrue = true;
 

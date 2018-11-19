@@ -31,6 +31,9 @@ public class LoginMobilePage extends LoadableComponent<LoginMobilePage> {
     @AndroidFindBy(id = "row_container")
     List<WebElement> listArticleResult;
 
+    @AndroidFindBy(xpath = "//android.widget.RelativeLayout/android.widget.TextView")
+    List<WebElement> moreProducts;
+
     @AndroidFindBy(id = "article_title")
     WebElement txtArticleTitle;
 
@@ -213,6 +216,39 @@ public class LoginMobilePage extends LoadableComponent<LoginMobilePage> {
         return isTrue;
     }
 
+    public boolean OpenMoreSTProductsScreen() {
+        boolean isTrue = false;
+        try {
+            isTrue = clickNavigationMenu();
+            isTrue = isTrue && Elementwrappers.click(driver,btnMoreProducts);
+            String output = isTrue ? "Pass" : "Fail";
+            Log.info(output + "Click on more products");
+        } catch (Exception e) {
+            Log.info("Error" + "Click on more products" + e);
+        }
+        return isTrue;
+    }
+
+    public boolean SelectGivenSTProduct() {
+        boolean isTrue = false;
+        int productSize = 0;
+        try {
+            while(productSize < moreProducts.size()) {
+                if(moreProducts.get(productSize).getText().equalsIgnoreCase(TestDataValue.OtherProduct)){
+                    Log.info("Matching product found with given name "+TestDataValue.OtherProduct);
+                    isTrue = Elementwrappers.click(driver,moreProducts.get(productSize));
+                    break;
+                }
+                productSize++;
+            }
+            String output = isTrue ? "Pass" : "Fail";
+            Log.info(output + "Select the given product");
+        } catch (Exception e) {
+            Log.info("Error" + "Select the given product" + e);
+        }
+        return isTrue;
+    }
+
     public boolean verifyFirstArticleInResult() {
         boolean isTrue = false;
         try {
@@ -233,6 +269,18 @@ public class LoginMobilePage extends LoadableComponent<LoginMobilePage> {
             Log.info(output + "Verify empty search result");
         } catch (Exception e) {
             Log.info("Error" + "Verify empty search result" + e);
+        }
+        return isTrue;
+    }
+
+    public boolean verifySTProductMainTitle() {
+        boolean isTrue = false;
+        try {
+            isTrue = lblTopStories.getText().contains(TestDataValue.OtherProduct);
+            String output = isTrue ? "Pass" : "Fail";
+            Log.info(output + "Verify product main title");
+        } catch (Exception e) {
+            Log.info("Error" + "Verify product main title" + e);
         }
         return isTrue;
     }
