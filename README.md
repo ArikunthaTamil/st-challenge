@@ -5,7 +5,7 @@ Description: This repo contains BDD script for straitstimes Android mobile and D
 
 Framework Details:
 
-a. Main Runner class implemented at st-challenge/src/test/java/st/runner and specify @SmokeTestMobile tag to run all cases
+a. Main Runner class implemented at st-challenge/src/test/java/st/runner and specify @SmokeTestMobile tag to run all mobile cases & @SmokeTestDesktop to run Desktop browser case
 
 b. Copy straitstimes.apk(Download from https://apkpure.com/the-straits-times-for-smartphone/com.buuuk.st/download?from=details) into directory st-challenge/Apps/Android
 
@@ -14,6 +14,14 @@ c. Execution config details can be found at st-challenge/config.properties(Speci
 d. Scenarios SmokeTest.feature can be found at st-challenge/Features
 
 e. Reports can & Screenshots be found after test run at st-challenge/reports & st-challenge/Screenshots
+
+Note: Make sure appium servre started at port 4723 (appium -p 4732)
+
+Appium Environment Setup:
+
+a. Run $ npm install -g appium in terminal window
+
+Note: Make sure you already installed Node Js https://nodejs.org/en/download/
 
 Android Environment Setup:
 
