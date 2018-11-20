@@ -9,7 +9,7 @@ a. Main Runner class implemented at st-challenge/src/test/java/st/runner and spe
 
 b. Copy straitstimes.apk(Download from https://apkpure.com/the-straits-times-for-smartphone/com.buuuk.st/download?from=details) into directory st-challenge/Apps/Android
 
-c. Execution config details can be found at st-challenge/config.properties
+c. Execution config details can be found at st-challenge/config.properties(Specify platform and AVD Emulator name for Android)
 
 d. Scenarios SmokeTest.feature can be found at st-challenge/Features
 
@@ -25,6 +25,8 @@ c. Also add ~/Library/Android/sdk/platform-tool;/Library/Android/sdk/tools
 directories to $PATH
 
 d. Make sure $JAVA_HOME environment variable set and added to $PATH
+
+e. Install SDK for API leave 25 and create new virtual device with x64/x86 type system image(use this name in config.properties file)
 
 Note: The path needs to be updated as per current machine installation location
 
